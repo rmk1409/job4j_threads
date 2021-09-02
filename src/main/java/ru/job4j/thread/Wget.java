@@ -1,4 +1,4 @@
-package thread;
+package ru.job4j.thread;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -15,6 +15,9 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        if (args.length < 2) {
+            throw new IllegalArgumentException("There are not enough arguments.");
+        }
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
         Thread wget = new Thread(new Wget(url, speed));
