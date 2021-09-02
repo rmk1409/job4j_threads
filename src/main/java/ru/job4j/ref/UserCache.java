@@ -1,6 +1,6 @@
 package ru.job4j.ref;
 
-import org.apache.http.annotation.NotThreadSafe;
+import net.jcip.annotations.NotThreadSafe;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
