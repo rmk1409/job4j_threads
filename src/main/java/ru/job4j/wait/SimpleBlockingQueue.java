@@ -26,4 +26,8 @@ public class SimpleBlockingQueue<T> {
             return queue.poll();
         }
     }
+
+    public synchronized int size() {
+        return queue.size();
+    }
 }
