@@ -1,28 +1,12 @@
 package ru.job4j.io;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.function.Predicate;
 
-public class ParseFile {
-}
-
-class Writer {
-    private final File file;
-
-    public Writer(File file) {
-        this.file = file;
-    }
-
-    public void saveContent(String content) throws IOException {
-        try (BufferedOutputStream o = new BufferedOutputStream(new FileOutputStream(file))) {
-            for (int i = 0; i < content.length(); i += 1) {
-                o.write(content.charAt(i));
-            }
-        }
-    }
-}
-
-class Reader {
+public class Reader {
     private final File file;
 
     public Reader(File file) {
