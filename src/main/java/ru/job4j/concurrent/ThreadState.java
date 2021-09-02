@@ -10,7 +10,9 @@ public class ThreadState {
         second.start();
         System.out.println(first.getName());
         System.out.println(second.getName());
-        while (first.getState() != Thread.State.TERMINATED && second.getState() != Thread.State.TERMINATED) {
+        while (first.getState() != Thread.State.TERMINATED || second.getState() != Thread.State.TERMINATED) {
+            System.out.printf("first - %s%n", first.getState());
+            System.out.printf("second - %s%n", second.getState());
         }
         System.out.println("Both threads are terminated");
     }
