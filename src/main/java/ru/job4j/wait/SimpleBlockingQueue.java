@@ -10,9 +10,17 @@ import java.util.Queue;
 public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private final Queue<T> queue = new LinkedList<>();
+    private final int capacity;
 
-    public void offer(T value) {
+    public SimpleBlockingQueue(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public void offer(T value) throws InterruptedException {
         synchronized (this) {
+            while (queue.size() == capacity) {
+                wait();
+            }
             queue.add(value);
             notifyAll();
         }
