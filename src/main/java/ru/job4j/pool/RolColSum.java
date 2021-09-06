@@ -7,10 +7,7 @@ import java.util.concurrent.ExecutionException;
 
 public class RolColSum {
     public static Sums[] sum(int[][] matrix) {
-        Sums[] result = new Sums[matrix.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = new Sums();
-        }
+        Sums[] sums = new Sums[matrix.length];
         for (int i = 0; i < matrix.length; i++) {
             int rowSum = 0;
             int colSum = 0;
@@ -18,60 +15,44 @@ public class RolColSum {
                 rowSum += matrix[i][j];
                 colSum += matrix[j][i];
             }
-            result[i].rowSum = rowSum;
-            result[i].colSum = colSum;
+            sums[i] = new Sums(rowSum, colSum);
         }
-        return result;
+        return sums;
     }
 
     public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
-        Sums[] result = new Sums[matrix.length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = new Sums();
-        }
-
-        Map<Integer, CompletableFuture<Integer>> futureRowSums = new HashMap<>();
-        Map<Integer, CompletableFuture<Integer>> futureColumnSums = new HashMap<>();
-
+        Map<Integer, CompletableFuture<Sums>> futureSums = new HashMap<>();
         for (int i = 0; i < matrix.length; i++) {
-            futureRowSums.put(i, getRowCompletableFuture(matrix, i));
-            futureColumnSums.put(i, getColumnCompletableFuture(matrix, i));
+            futureSums.put(i, getCompletableFuture(matrix, i));
+        }
+        Sums[] sums = new Sums[matrix.length];
+        for (Map.Entry<Integer, CompletableFuture<Sums>> entry : futureSums.entrySet()) {
+            sums[entry.getKey()] = entry.getValue().get();
         }
 
-        for (Map.Entry<Integer, CompletableFuture<Integer>> entry : futureRowSums.entrySet()) {
-            result[entry.getKey()].rowSum = entry.getValue().get();
-        }
-        for (Map.Entry<Integer, CompletableFuture<Integer>> entry : futureColumnSums.entrySet()) {
-            result[entry.getKey()].colSum = entry.getValue().get();
-        }
-
-        return result;
+        return sums;
     }
 
-    private static CompletableFuture<Integer> getRowCompletableFuture(int[][] matrix, int i) {
+    private static CompletableFuture<Sums> getCompletableFuture(int[][] matrix, int i) {
         return CompletableFuture.supplyAsync(() -> {
-            int sum = 0;
+            int rowSum = 0;
+            int columnSum = 0;
             for (int j = 0; j < matrix.length; j++) {
-                sum += matrix[i][j];
+                rowSum += matrix[i][j];
+                columnSum += matrix[j][i];
             }
-            return sum;
-        });
-    }
-
-    private static CompletableFuture<Integer> getColumnCompletableFuture(int[][] matrix, int i) {
-        return CompletableFuture.supplyAsync(() -> {
-            int sum = 0;
-            for (int[] ints : matrix) {
-                sum += ints[i];
-            }
-            return sum;
+            return new Sums(rowSum, columnSum);
         });
     }
 
     public static class Sums {
-        private int rowSum;
-        private int colSum;
-        /* Getter and Setter */
+        private final int rowSum;
+        private final int colSum;
+
+        public Sums(int rowSum, int colSum) {
+            this.rowSum = rowSum;
+            this.colSum = colSum;
+        }
 
         public int getRowSum() {
             return rowSum;

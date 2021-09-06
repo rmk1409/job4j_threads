@@ -7,7 +7,6 @@ import java.util.concurrent.ExecutionException;
 import static org.junit.Assert.assertEquals;
 
 public class RolColSumTest {
-
     @Test
     public void sum() {
         int[][] matrix = {
