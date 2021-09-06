@@ -38,4 +38,15 @@ public class ThreadPool {
     public void shutdown() {
         threads.forEach(Thread::interrupt);
     }
+
+    public static void main(String[] args) throws InterruptedException {
+        ThreadPool pool = new ThreadPool();
+        System.out.println("size is: " + pool.threads.size());
+        for (int i = 0; i < 10; i++) {
+            int x = i;
+            pool.work(() -> System.out.println(Thread.currentThread().getName() + ", counter is " + x));
+        }
+        Thread.sleep(500);
+        pool.shutdown();
+    }
 }
