@@ -2,13 +2,13 @@ package ru.job4j.ustorage;
 
 import net.jcip.annotations.ThreadSafe;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ConcurrentHashMap;
 
 @ThreadSafe
 public class UserStorage {
-    private final Map<Integer, User> users = new ConcurrentHashMap<>();
+    private final Map<Integer, User> users = new HashMap<>();
 
     public synchronized boolean add(User user) {
         return Objects.isNull(users.putIfAbsent(user.getId(), user));
