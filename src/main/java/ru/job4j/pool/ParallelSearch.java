@@ -31,16 +31,12 @@ public class ParallelSearch<T> extends RecursiveTask<Integer> {
         rightSearch.fork();
         Integer left = leftSearch.join();
         Integer right = rightSearch.join();
-        return merge(left, right);
-    }
-
-    private Integer merge(Integer left, Integer right) {
-        return left == -1 ? right : left;
+        return Math.max(left, right);
     }
 
     private Integer linearSearch() {
         int result = -1;
-        for (int i = from; i < to; i++) {
+        for (int i = from; i <= to; i++) {
             if (element.equals(array[i])) {
                 result = i;
                 break;
