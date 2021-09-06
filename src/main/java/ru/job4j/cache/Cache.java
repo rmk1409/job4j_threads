@@ -13,11 +13,8 @@ public class Cache {
 
     public boolean update(Base model) {
         int modelId = model.getId();
-        Base cachedModel = memory.get(modelId);
-        if (Objects.isNull(cachedModel)) {
-            throw new IllegalArgumentException(String.format("Cache doesn't have model with id %d", modelId));
-        }
         return Objects.nonNull(memory.computeIfPresent(modelId, (id, oldModel) -> {
+            Base cachedModel = memory.get(modelId);
             if (model.getVersion() != cachedModel.getVersion()) {
                 throw new OptimisticException(String.format("Different ids: %d and %d", modelId, cachedModel.getVersion()));
             }
