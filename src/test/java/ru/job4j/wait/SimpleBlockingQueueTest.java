@@ -91,7 +91,7 @@ public class SimpleBlockingQueueTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 10 && !Thread.currentThread().isInterrupted(); i++) {
                 try {
                     queue.poll();
                 } catch (InterruptedException e) {
@@ -111,7 +111,7 @@ public class SimpleBlockingQueueTest {
 
         @Override
         public void run() {
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 10 && !Thread.currentThread().isInterrupted(); i++) {
                 try {
                     queue.offer(i);
                 } catch (InterruptedException e) {

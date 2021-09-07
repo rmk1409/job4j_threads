@@ -42,6 +42,6 @@ public class SimpleBlockingQueue<T> {
     }
 
     public synchronized boolean isEmpty() {
-        return capacity == queue.size();
+        return queue.isEmpty();
     }
 }

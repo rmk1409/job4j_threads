@@ -35,11 +35,4 @@ public class CacheTest {
         model.setName("test-name");
         assertTrue(cache.update(model));
     }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void updateFail() {
-        Base model = new Base(1, 1);
-        model.setName("test-name");
-        assertFalse(cache.update(model));
-    }
 }
